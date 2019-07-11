@@ -32,4 +32,4 @@ Please use GXCUtil on your own risk.
 
 ## License
 
-[MIT](./LICENSE).
+[MIT](./LICENSE)

@@ -4,12 +4,8 @@ GXCUtil is a Python utility library for GXC.
 
 ## Installation
 
-Add this repository to requirements and install with `pip install -r requirements.txt`
-
-**requirements.txt**
 ```
-... (other requirements)
-git+https://github.com/Game-X-Coin/gxcutil.git@master
+$ pip install gxcutil
 ```
 
 ## Utilities

@@ -113,8 +113,7 @@ def verify_signature(pub: Tuple[int, int], data: bytes, signature: str)->bool:
     return ecdsa.verify(pub, sign_data, r, s)
 
 
-def sign(gxc_private_key: str, data: bytes)->str:
-        sign_key = from_bytes(base58.b58decode(gxc_private_key.encode('utf8'))[1:-4])
+def sign(sign_key: int, data: bytes)->str:
         sign_data = int.from_bytes(sha256(data), byteorder='big')
         pub = ecdsa.key_to_pub(sign_key)
 

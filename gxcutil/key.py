@@ -113,23 +113,23 @@ def verify_signature(pub: Tuple[int, int], data: bytes, signature: str) -> bool:
     return ecdsa.verify(pub, sign_data, r, s)
 
 
-def sign(sign_key: int, data: bytes)->str:
-        sign_data = int.from_bytes(sha256(data), byteorder='big')
-        pub = ecdsa.key_to_pub(sign_key)
+def sign(sign_key: int, data: bytes) -> str:
+    sign_data = int.from_bytes(sha256(data), byteorder='big')
+    pub = ecdsa.key_to_pub(sign_key)
 
-        i, r, s = ecdsa.sign(sign_key, sign_data, pub=pub)
+    i, r, s = ecdsa.sign(sign_key, sign_data, pub=pub)
 
-        i_bytes = to_bytes(i, size=1)
-        r_bytes = to_bytes(r, size=32)
-        s_bytes = to_bytes(s, size=32)
+    i_bytes = to_bytes(i, size=1)
+    r_bytes = to_bytes(r, size=32)
+    s_bytes = to_bytes(s, size=32)
 
-        sign_body = b''.join((
-            i_bytes,
-            r_bytes,
-            s_bytes,
-        ))
+    sign_body = b''.join((
+        i_bytes,
+        r_bytes,
+        s_bytes,
+    ))
 
-        return 'SIG_K1_' + base58.b58encode(b''.join((
-            sign_body,
-            ripemd160(sign_body + b'K1')[:4],
-        ))).decode('utf8')
+    return 'SIG_K1_' + base58.b58encode(b''.join((
+        sign_body,
+        ripemd160(sign_body + b'K1')[:4],
+    ))).decode('utf8')

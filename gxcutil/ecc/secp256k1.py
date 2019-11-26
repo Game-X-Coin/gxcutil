@@ -12,27 +12,27 @@ _G = ECCPoint(
 
 class _Secp256k1(Curve):
     @property
-    def p(self)->int:
+    def p(self) -> int:
         return 0xfffffffffffffffffffffffffffffffffffffffffffffffffffffffefffffc2f
 
     @property
-    def a(self)->int:
+    def a(self) -> int:
         return 0x00
 
     @property
-    def b(self)->int:
+    def b(self) -> int:
         return 0x07
 
     @property
-    def n(self)->int:
+    def n(self) -> int:
         return 0xfffffffffffffffffffffffffffffffebaaedce6af48a03bbfd25e8cd0364141
 
     @property
-    def h(self)->int:
+    def h(self) -> int:
         return 0x01
 
     @property
-    def G(self)->ECCPoint:
+    def G(self) -> ECCPoint:
         return _G
 
 

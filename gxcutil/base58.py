@@ -4,7 +4,7 @@ from .utils import to_bytes
 _b58char = b'123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz'
 
 
-def b58encode(s: bytes)->bytes:
+def b58encode(s: bytes) -> bytes:
     s_len = len(s)
     s = s.lstrip(b'\x00')
     lpad = s_len - len(s)
@@ -19,7 +19,7 @@ def b58encode(s: bytes)->bytes:
     return _b58char[0:1] * lpad + b''.join(reversed(r))
 
 
-def b58decode(s: bytes)->bytes:
+def b58decode(s: bytes) -> bytes:
     s_len = len(s)
     s = s.lstrip(_b58char[0:1])
     lpad = s_len - len(s)

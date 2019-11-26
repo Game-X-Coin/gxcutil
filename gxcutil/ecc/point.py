@@ -1,3 +1,5 @@
+from typing import Optional
+
 from ..utils import mod_inv
 
 
@@ -22,17 +24,17 @@ class ECCPoint:
             self._y = y % self._p
 
     @property
-    def x(self)->int:
+    def x(self) -> int:
         return self._x
 
     @property
-    def y(self)->int:
+    def y(self) -> int:
         return self._y
 
-    def __neg__(self)->'ECCPoint':
+    def __neg__(self) -> 'ECCPoint':
         return ECCPoint(self._x, -self._y, self._p, self._a, self._b)
 
-    def __add__(self, o: 'ECCPoint')->'ECCPoint' or None:
+    def __add__(self, o: 'ECCPoint') -> Optional['ECCPoint']:
         if o is None:
             return None
 
@@ -45,7 +47,7 @@ class ECCPoint:
 
         return ECCPoint(x, y, self._p, self._a, self._b)
 
-    def __sub__(self, o: 'ECCPoint')->'ECCPoint' or None:
+    def __sub__(self, o: 'ECCPoint') -> Optional['ECCPoint']:
         if o is None:
             return None
 
@@ -58,10 +60,10 @@ class ECCPoint:
 
         return ECCPoint(x, y, self._p, self._a, self._b)
 
-    def __eq__(self, o: 'ECCPoint')->bool:
+    def __eq__(self, o: 'ECCPoint') -> bool:
         return self._x == o._x and self._y == o._y
 
-    def double(self)->'ECCPoint' or None:
+    def double(self) -> Optional['ECCPoint']:
         if self._y == 0:
             return None
 
@@ -71,7 +73,7 @@ class ECCPoint:
 
         return ECCPoint(x, y, self._p, self._a, self._b)
 
-    def multiply(self, n: int, cache: list or None = None)->'ECCPoint' or None:
+    def multiply(self, n: int, cache: list = None) -> Optional['ECCPoint']:
         if cache is None:
             w_size = 1
             cache = [None, self]

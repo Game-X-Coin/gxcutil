@@ -6,12 +6,12 @@ from .utils import to_bytes, from_bytes
 from typing import Tuple, Optional
 
 
-def generate_private_key()->str:
+def generate_private_key() -> str:
     sign_key = ecdsa.random_key()
     return sign_key_to_private_key(sign_key)
 
 
-def pub_to_public_key(pub: Tuple[int, int])->str:
+def pub_to_public_key(pub: Tuple[int, int]) -> str:
     x, y = pub
 
     compressed = b'\x03' if y % 2 else b'\x02'
@@ -24,14 +24,14 @@ def pub_to_public_key(pub: Tuple[int, int])->str:
     ))).decode('utf8')
 
 
-def sign_key_to_private_key(sign_key: int)->str:
+def sign_key_to_private_key(sign_key: int) -> str:
     key_body = to_bytes(sign_key, 32)
     private_key = b'\x80' + key_body
 
     return base58.b58encode(private_key + sha256loop(private_key, 2)[:4]).decode('utf8')
 
 
-def public_key_to_pub(gxc_public_key: str)->Optional[Tuple[int, int]]:
+def public_key_to_pub(gxc_public_key: str) -> Optional[Tuple[int, int]]:
     public_key = base58.b58decode(gxc_public_key[3:].encode('utf8'))
     compressed, pub_body, checksum = public_key[:1], public_key[1:33], public_key[33:37]
 
@@ -41,20 +41,20 @@ def public_key_to_pub(gxc_public_key: str)->Optional[Tuple[int, int]]:
     return pub_x, pub_y
 
 
-def private_key_to_sign_key(gxc_private_key: str)->Optional[int]:
+def private_key_to_sign_key(gxc_private_key: str) -> Optional[int]:
     gxc_private_key = gxc_private_key.encode('utf-8')
     gxc_private_key = base58.b58decode(gxc_private_key)
 
     return from_bytes(gxc_private_key[1:-4])
 
 
-def private_key_to_public_key(gxc_private_key: str)->str:
+def private_key_to_public_key(gxc_private_key: str) -> str:
     sign_key = from_bytes(base58.b58decode(gxc_private_key.encode('utf8'))[1:-4])
     pub = ecdsa.key_to_pub(sign_key)
     return pub_to_public_key(pub)
 
 
-def is_valid_public_key(gxc_public_key: str)->bool:
+def is_valid_public_key(gxc_public_key: str) -> bool:
     if gxc_public_key[:3] != 'GXC':
         return False
 
@@ -74,7 +74,7 @@ def is_valid_public_key(gxc_public_key: str)->bool:
     return True
 
 
-def is_valid_private_key(gxc_private_key: str)->bool:
+def is_valid_private_key(gxc_private_key: str) -> bool:
     if len(gxc_private_key) < 5:
         return False
 
@@ -92,7 +92,7 @@ def is_valid_private_key(gxc_private_key: str)->bool:
     return True
 
 
-def verify_signature(pub: Tuple[int, int], data: bytes, signature: str)->bool:
+def verify_signature(pub: Tuple[int, int], data: bytes, signature: str) -> bool:
     if len(signature) < 8:
         return False
 

@@ -4,7 +4,7 @@ from ..utils import mod_inv, from_bytes
 from .curve import Curve
 from .point import ECCPoint
 
-from typing import Tuple
+from typing import Tuple, Optional
 import secrets
 
 _wnaf_cache = [None, Secp256k1.G, Secp256k1.G.double()]
@@ -19,7 +19,7 @@ for _ in range(3, 1 << 8):
     _wnaf_cache.append(_wnaf_cache[-1] + _wnaf_cache[1])
 
 
-def _is_canonical(r: int, s: int)->bool:
+def _is_canonical(r: int, s: int) -> bool:
     return (
             not (_canonical_byte1 & r)
             and not (_key_byte1 & r == 0 and not (_canonical_byte2 & r))
@@ -28,7 +28,7 @@ def _is_canonical(r: int, s: int)->bool:
     )
 
 
-def _get_recovery_param(hash_data: int, r: int, s: int, pub_x: int, pub_y: int, curve: Curve = None, cache=None)-> int or None:
+def _get_recovery_param(hash_data: int, r: int, s: int, pub_x: int, pub_y: int, curve: Curve = None, cache=None) -> Optional[int]:
     if curve is None:
         cache = _wnaf_cache
         curve = Secp256k1
@@ -60,7 +60,7 @@ def _get_recovery_param(hash_data: int, r: int, s: int, pub_x: int, pub_y: int, 
     # return None
 
 
-def sign(key: int, hash_data: int, pub: Tuple[int, int] = None, curve: Curve = None, cache=None)->Tuple[int, int, int]:
+def sign(key: int, hash_data: int, pub: Tuple[int, int] = None, curve: Curve = None, cache=None) -> Tuple[int, int, int]:
     if curve is None:
         cache = _wnaf_cache
         curve = Secp256k1
@@ -100,7 +100,7 @@ def sign(key: int, hash_data: int, pub: Tuple[int, int] = None, curve: Curve = N
     return i, r, s
 
 
-def verify(pub: Tuple[int, int], hash_data: int, r: int, s: int, curve: Curve = None, cache=None)->bool:
+def verify(pub: Tuple[int, int], hash_data: int, r: int, s: int, curve: Curve = None, cache=None) -> bool:
     if curve is None:
         cache = _wnaf_cache
         curve = Secp256k1
@@ -131,7 +131,7 @@ def verify(pub: Tuple[int, int], hash_data: int, r: int, s: int, curve: Curve = 
     return v == r
 
 
-def pub_x_to_pub_y(pub_x: int, is_odd: bool, curve: Curve = None)->int:
+def pub_x_to_pub_y(pub_x: int, is_odd: bool, curve: Curve = None) -> int:
     if curve is None:
         curve = Secp256k1
 
@@ -143,7 +143,7 @@ def pub_x_to_pub_y(pub_x: int, is_odd: bool, curve: Curve = None)->int:
     return pub_y
 
 
-def key_to_pub(key: int, curve: Curve = None, cache=None)->Tuple[int, int]:
+def key_to_pub(key: int, curve: Curve = None, cache=None) -> Tuple[int, int]:
     if curve is None:
         cache = _wnaf_cache
         curve = Secp256k1
@@ -153,7 +153,7 @@ def key_to_pub(key: int, curve: Curve = None, cache=None)->Tuple[int, int]:
     return keyG.x, keyG.y
 
 
-def random_key(curve: Curve = None)->int:
+def random_key(curve: Curve = None) -> int:
     if curve is None:
         curve = Secp256k1
 

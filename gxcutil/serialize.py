@@ -5,7 +5,7 @@ from typing import List
 _name_char = '.12345abcdefghijklmnopqrstuvwxyz'
 
 
-def _serialize_var_uint32(n: int)->bytes:
+def _serialize_var_uint32(n: int) -> bytes:
     r = bytearray()
 
     while True:
@@ -19,7 +19,7 @@ def _serialize_var_uint32(n: int)->bytes:
     return bytes(r)
 
 
-def _serialize_name(s: str)->bytes:
+def _serialize_name(s: str) -> bytes:
     s_int = 0
     for c in s:
         s_int = (s_int << 5) + _name_char.index(c)
@@ -28,14 +28,14 @@ def _serialize_name(s: str)->bytes:
     return to_bytes(s_int, size=8, byteorder='little')
 
 
-def _serialize_permission(actor: str, permission: str)->bytes:
+def _serialize_permission(actor: str, permission: str) -> bytes:
     return b''.join((
         _serialize_name(actor),
         _serialize_name(permission),
     ))
 
 
-def _serialize_action(account: str, name: str, authorization: List[dict], hex_data: bytes)->bytes:
+def _serialize_action(account: str, name: str, authorization: List[dict], hex_data: bytes) -> bytes:
     return b''.join((
         _serialize_name(account),
         _serialize_name(name),
@@ -48,7 +48,7 @@ def _serialize_action(account: str, name: str, authorization: List[dict], hex_da
 
 def serialize_transaction(expiration: int,
                           ref_block_num_bytes: bytes, ref_block_prefix: bytes,
-                          actions: List[dict])->bytes:
+                          actions: List[dict]) -> bytes:
     return b''.join((
         to_bytes(expiration, 4, 'little'),  # expiration
         ref_block_num_bytes,  # ref_block_num

@@ -8,7 +8,7 @@ requires = [
 ]
 setuptools.setup(
     name="gxcutil",
-    version="0.1.19",
+    version="0.1.20",
     author="Lucid",
     author_email="contact@lucid.dev",
     description="Python utility library for GXC",

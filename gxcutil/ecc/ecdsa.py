@@ -34,11 +34,7 @@ def _get_recovery_param(hash_data: int, r: int, s: int, pub_x: int, pub_y: int, 
         curve = Secp256k1
 
     R = ECCPoint(r, None, curve)
-    # nR = R.multiply(curve.n)
-    # if nR is not None:
-    #     raise RuntimeError('nR is not INF')
 
-    # data_neg = (-data) % curve.n
     data_neg = curve.n - hash_data
     data_neg_G = curve.G.multiply(data_neg, cache)
     r_inv = mod_inv(r, curve.n)
@@ -49,15 +45,7 @@ def _get_recovery_param(hash_data: int, r: int, s: int, pub_x: int, pub_y: int, 
     if Q.x == pub_x and Q.y == pub_y:
         return R.y & 1
 
-    # R = -R
-    # Q = R.multiply(s) + data_neg_G
-    # Q = Q.multiply(r_inv)
-    #
-    # if Q.x == pub_x and Q.y == pub_y:
-    #     return R.y & 1
     return 1 - (R.y & 1)
-
-    # return None
 
 
 def sign(key: int, hash_data: int, pub: Tuple[int, int] = None, curve: Curve = None, cache=None) -> Tuple[int, int, int]:
